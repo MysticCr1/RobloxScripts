@@ -4,7 +4,7 @@ function Chat(MSG)
 end
 local player = game.Players.LocalPlayer
 local rightArm = player.Character["Right Arm"]
-local leftArm = player.Character["Leg Arm"]
+local leftArm = player.Character["Left Arm"]
 local lleg = player.Character["Left Leg"]
 local c3 = Color3.fromHex("0000ff")
 function Fistvfxr()
