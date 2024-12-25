@@ -2,7 +2,14 @@ local Players = game:GetService("Players")
 function Chat(MSG)
     game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(MSG, "All")
 end
-
+function Notification(text)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "By OperationCryptic",
+        Text = text,
+        Icon = "rbxassetid://111229342765121",
+        Duration = 15,
+    })
+end
 local player = game.Players.LocalPlayer
 local rightArm = player.Character["Right Arm"]
 local lleg = player.Character["Left Leg"]
@@ -147,3 +154,4 @@ local function onAnimationPlayed(animTrack)
     end
 end
 humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+Notification("MINOS PRIME LOADED")
