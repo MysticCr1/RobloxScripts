@@ -145,6 +145,7 @@ local function onAnimationPlayed(animTrack)
             local ring = game:GetService("ReplicatedStorage").Resources.StoicBomb["stoic bomb boom entrance"].Attachment
             :Clone()
             ring.Parent = lleg
+            ring.Rotation = Vector3.new(180, 0, -180)
             for _, child in ipairs(ring:GetChildren()) do
                 if child:IsA("ParticleEmitter") then
                     child:Emit(1)
@@ -154,4 +155,4 @@ local function onAnimationPlayed(animTrack)
     end
 end
 humanoid.AnimationPlayed:Connect(onAnimationPlayed)
-Notification("MINOS PRIME LOADED")
+Notification("MINOS PRIME SCRIPT LOADED")
