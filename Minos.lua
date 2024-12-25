@@ -85,6 +85,10 @@ local function onAnimationPlayed(animTrack)
     if animTrack.Animation.AnimationId == flow then
         animTrack:Stop()
         local newAnim = Instance.new("Animation")
+        local ambience = Instance.new("Sound", workspace)
+        ambience.SoundId = "rbxassetid://18553892205"
+        ambience.Volume = 0.5
+        ambience:Play()
         newAnim.AnimationId = "rbxassetid://13927612951"
         local f = humanoid:LoadAnimation(newAnim)
         f:Play()
@@ -127,7 +131,8 @@ local function onAnimationPlayed(animTrack)
         rightArm.DIEVFX:Destroy()
         wait(0.5)
         for i = 0, 20 do
-            local ring = game:GetService("ReplicatedStorage").Resources.StoicBomb["stoic bomb boom entrance"].Attachment:Clone()
+            local ring = game:GetService("ReplicatedStorage").Resources.StoicBomb["stoic bomb boom entrance"].Attachment
+            :Clone()
             ring.Parent = lleg
             for _, child in ipairs(ring:GetChildren()) do
                 if child:IsA("ParticleEmitter") then
