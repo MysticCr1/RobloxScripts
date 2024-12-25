@@ -4,12 +4,13 @@ function Chat(MSG)
 end
 local player = game.Players.LocalPlayer
 local rightArm = player.Character["Right Arm"]
+local leftArm = player.Character["Leg Arm"]
 local lleg = player.Character["Left Leg"]
 local c3 = Color3.fromHex("0000ff")
-function Fistvfx()
+function Fistvfxr()
     local effect = game.ReplicatedStorage.Resources.FiveSeasonsFX["CharFX"].ArmFX:Clone()
     effect.Parent = rightArm
-    effect.Name = "DIEVFX"
+    effect.Name = "DIEVFXR"
     effect.Rotation = Vector3.new(180, 0, -180)
     for _, child in ipairs(effect:GetChildren()) do
         if child:IsA("ParticleEmitter") then
@@ -18,7 +19,18 @@ function Fistvfx()
         end
     end
 end
-
+function Fistvfxl()
+    local effect = game.ReplicatedStorage.Resources.FiveSeasonsFX["CharFX"].ArmFX:Clone()
+    effect.Parent = leftArm
+    effect.Name = "DIEVFXL"
+    effect.Rotation = Vector3.new(180, 0, -180)
+    for _, child in ipairs(effect:GetChildren()) do
+        if child:IsA("ParticleEmitter") then
+            child.Color = ColorSequence.new(c3)
+            child:Emit(1)
+        end
+    end
+end
 local character = player.Character or player.CharacterAdded:Wait()
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
@@ -36,6 +48,7 @@ local ultcolor = ultbar:FindFirstChild("Health")
 local ulttext = ultbar:FindFirstChild("TextLabel")
 ulttext.Text = "WEAK."
 ultcolor.Bar.Bar.ImageColor3 = Color3.fromRGB(103, 166, 255)
+LocalPlayer.PlayerGui.Hotbar:WaitForChild("Backpack").LocalScript.Cooldown.BackgroundColor3 = Color3.fromRGB(103, 166, 255)
 local baseButton = hotbarFrame:FindFirstChild("1").Base
 local ToolName = baseButton.ToolName
 ToolName.Text = "JUDGEMENT!"
@@ -44,10 +57,10 @@ local ToolName = baseButton.ToolName
 ToolName.Text = "Die!"
 local baseButton = hotbarFrame:FindFirstChild("3").Base
 local ToolName = baseButton.ToolName
-ToolName.Text = ""
+ToolName.Text = "Crush!"
 local baseButton = hotbarFrame:FindFirstChild("4").Base
 local ToolName = baseButton.ToolName
-ToolName.Text = ""
+ToolName.Visible = false
 local numberOfSpirals = 7
 local radius = 20
 local height = 190
@@ -59,6 +72,7 @@ local timeStep = duration / steps
 humanoid.AnimationPlayed:Connect(onAnimationPlayed)
 local leth = "rbxassetid://12296113986"
 local flow = "rbxassetid://12272894215"
+local hunt = "rbxassetid://12309835105"
 local function getNearestPlayer()
     local closestPlayer = nil
     local shortestDistance = math.huge
@@ -91,7 +105,7 @@ local function onAnimationPlayed(animTrack)
         newAnim.AnimationId = "rbxassetid://13927612951"
         local f = humanoid:LoadAnimation(newAnim)
         f:Play()
-        f:AdjustSpeed(2.5)
+        f:AdjustSpeed(1.5)
         for i = 1, 25 do
             wait(0)
             local targetp = getNearestPlayer()
@@ -112,7 +126,7 @@ end
 humanoid.AnimationPlayed:Connect(onAnimationPlayed)
 local function onAnimationPlayed(animTrack)
     if animTrack.Animation.AnimationId == leth then
-        Fistvfx()
+        Fistvfxr()
         local centerOffset = rootPart.Position
         for i = 0, steps do
             task.wait(timeStep)
@@ -131,7 +145,7 @@ local function onAnimationPlayed(animTrack)
         vl:Play()
         rootPart.CFrame = CFrame.new(centerOffset)
         Chat("Die!")
-        rightArm.DIEVFX:Destroy()
+        rightArm.DIEVFXR:Destroy()
         wait(0.5)
         for i = 0, 20 do
             local ring = game:GetService("ReplicatedStorage").Resources.StoicBomb["stoic bomb boom entrance"].Attachment
@@ -144,6 +158,23 @@ local function onAnimationPlayed(animTrack)
                 end
             end
         end
+    end
+end
+humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+local function onAnimationPlayed(animTrack)
+    if animTrack.Animation.AnimationId == hunt then
+        player.Character.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 120)
+        Fistvfxl()
+        Fistvfxr()
+        local newAnim = Instance.new("Animation")
+        local vl = Instance.new("Sound", workspace)
+        vl.SoundId = "rbxassetid://128386676955532"
+        vl.Volume = 0.5
+        vl:Play()
+        newAnim.AnimationId = "rbxassetid://12467789963"
+        local f = humanoid:LoadAnimation(newAnim)
+        f:Play()
+        f:AdjustSpeed(1)
     end
 end
 humanoid.AnimationPlayed:Connect(onAnimationPlayed)
