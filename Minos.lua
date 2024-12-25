@@ -85,10 +85,10 @@ local function onAnimationPlayed(animTrack)
     if animTrack.Animation.AnimationId == flow then
         animTrack:Stop()
         local newAnim = Instance.new("Animation")
-        local ambience = Instance.new("Sound", workspace)
-        ambience.SoundId = "rbxassetid://18553892205"
-        ambience.Volume = 0.5
-        ambience:Play()
+        local vl = Instance.new("Sound", workspace)
+        vl.SoundId = "rbxassetid://18553892205"
+        vl.Volume = 0.5
+        vl:Play()
         newAnim.AnimationId = "rbxassetid://13927612951"
         local f = humanoid:LoadAnimation(newAnim)
         f:Play()
@@ -126,6 +126,10 @@ local function onAnimationPlayed(animTrack)
             local targetPosition = Vector3.new(x, y, z)
             rootPart.CFrame = CFrame.new(targetPosition)
         end
+        local vl = Instance.new("Sound", workspace)
+        vl.SoundId = "rbxassetid://18553878118"
+        vl.Volume = 0.5
+        vl:Play()
         rootPart.CFrame = CFrame.new(centerOffset)
         Chat("Die!")
         rightArm.DIEVFX:Destroy()
