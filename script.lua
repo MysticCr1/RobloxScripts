@@ -133,7 +133,7 @@ end)
 -- Rejoin Logic
 local function rejoinServer()
     local teleportScript = [[
-	loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFT.lua')()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFT.lua'))()
     ]]
     queue_on_teleport(teleportScript)
     TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
