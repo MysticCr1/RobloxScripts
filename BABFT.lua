@@ -162,9 +162,7 @@ local function rejoinServer()
     local teleportScript = string.format([[
         repeat task.wait() until game:IsLoaded()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFT.lua'))()
-        run = %s
-        purchasetools = %s
-    ]], tostring(run), tostring(purchasetools))
+    ]]
 
     queue_on_teleport(teleportScript)
     TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId)
