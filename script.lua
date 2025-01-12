@@ -10,6 +10,8 @@ function Notification(text)
     })
 end
 
+Notification("Script loaded successfully")
+
 -- Ensure `queue_on_teleport` is properly set up
 local queue_on_teleport = queue_on_teleport or function(code)
     if syn and syn.queue_on_teleport then
@@ -122,15 +124,7 @@ RunService.Stepped:Connect(function()
         end
     end
 end)
-local function rejoinServer()
-    local teleportScript = [[
-        repeat task.wait() until game:IsLoaded()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFT.lua'))()
-        --RELAUNCH
-    ]]
-    queue_on_teleport(teleportScript)
-    TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId)
-end
+
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("BABFT", colors)
 
@@ -164,6 +158,17 @@ local Purchasing = fun:NewSection("Purchasing")
 Purchasing:NewToggle("Tools", "Purchases tools automatically", function(state)
     purchasetools = state
 end)
+
+-- Rejoin Logic
+local function rejoinServer()
+    local teleportScript = [[
+        repeat task.wait() until game:IsLoaded()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFT.lua'))()
+    ]]
+    queue_on_teleport(teleportScript)
+    TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId)
+end
+
 -- Auto-rejoin every 19 minutes
 local rejoinDelay = 19 * 60 -- 19 minutes
 spawn(function()
