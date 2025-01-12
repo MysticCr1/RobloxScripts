@@ -1,7 +1,18 @@
 repeat task.wait() until game:IsLoaded()
-repeat task.wait() until game:IsLoaded()
 
+-- Notification Function
+function Notification(text)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Made by OperationCryptic",
+        Text = text,
+        Icon = "rbxassetid://111229342765121",
+        Duration = 15,
+    })
+end
 
+Notification("Script loaded successfully")
+
+-- Ensure `queue_on_teleport` is properly set up
 local queue_on_teleport = queue_on_teleport or function(code)
     if syn and syn.queue_on_teleport then
         syn.queue_on_teleport(code)
@@ -17,9 +28,6 @@ local RunService = game:GetService("RunService")
 local TeleportService = game:GetService("TeleportService")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local rejoinqueued = false
-local humanoidroot
-
 local function setupCharacter(character)
     humanoidroot = character:WaitForChild("HumanoidRootPart")
     print("HumanoidRootPart set up:", humanoidroot)
