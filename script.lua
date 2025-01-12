@@ -1,4 +1,5 @@
 repeat task.wait() until game:IsLoaded()
+wait(3)
 local TweenService = game:GetService("TweenService")
 local queue_on_teleport = queue_on_teleport or function(code)
     if syn and syn.queue_on_teleport then
