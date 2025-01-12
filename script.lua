@@ -1,5 +1,32 @@
 repeat task.wait() until game:IsLoaded()
-wait(3)
+
+local player = game.Players.LocalPlayer
+local dataFolder = player:FindFirstChild("Data") or player:WaitForChild("Data", 10) -- Wait up to 10 seconds for the 'Data' folder
+
+if not dataFolder then
+    warn("Data folder not found for the player. The script may not work as intended.")
+    return
+end
+
+local goldValueObject = dataFolder:FindFirstChild("Gold") or dataFolder:WaitForChild("Gold", 10) -- Wait for the Gold value
+
+if not goldValueObject then
+    warn("Gold value not found in the Data folder. The script may not work as intended.")
+    return
+end
+
+local goldv = goldValueObject.Value
+function Notification(text)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Made by OperationCryptic",
+        Text = text,
+        Icon = "rbxassetid://111229342765121",
+        Duration = 15,
+    })
+end
+Notification(
+    "Build A Boat For Treasure Script loaded"
+)
 local TweenService = game:GetService("TweenService")
 local queue_on_teleport = queue_on_teleport or function(code)
     if syn and syn.queue_on_teleport then
@@ -12,7 +39,6 @@ local queue_on_teleport = queue_on_teleport or function(code)
 end
 local RunService = game:GetService("RunService")
 local TeleportService = game:GetService("TeleportService")
-local player = game.Players.LocalPlayer
 local character = player.Character
 local bindingtool
 repeat task.wait() until game:GetService("Players").LocalPlayer.Data.Gold.Value
@@ -134,7 +160,7 @@ end)
 -- Rejoin Logic
 local function rejoinServer()
     local teleportScript = [[
-	loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFT.lua')()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFT.lua'))()
     ]]
     queue_on_teleport(teleportScript)
     TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
