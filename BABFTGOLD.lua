@@ -56,7 +56,7 @@ local function startTweens()
     local tween3 = TweenService:Create(
         humanoidroot,
         TweenInfo.new(2.5, Enum.EasingStyle.Linear),
-        { CFrame = CFrame.new(-54.751220703125, -351.3304443359375, 9495.1142578125) }
+        { CFrame = CFrame.new(-54.751220703125, -351.3304443359375, 9489.1142578125) }
     )
 
     tween2.Completed:Connect(function(playbackState)
