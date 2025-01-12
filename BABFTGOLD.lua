@@ -1,5 +1,6 @@
 repeat task.wait() until game:IsLoaded()
 wait(10)
+
 local queue_on_teleport = queue_on_teleport or function(code)
     if syn and syn.queue_on_teleport then
         syn.queue_on_teleport(code)
@@ -9,6 +10,7 @@ local queue_on_teleport = queue_on_teleport or function(code)
         warn("Your executor does not support queue_on_teleport.")
     end
 end
+
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local TeleportService = game:GetService("TeleportService")
@@ -19,6 +21,7 @@ local humanoidroot
 
 local function setupCharacter(character)
     humanoidroot = character:WaitForChild("HumanoidRootPart")
+    print("HumanoidRootPart set up:", humanoidroot)
 end
 
 local function removeVelocity()
@@ -42,6 +45,11 @@ local function maintainZeroVelocity(tween)
 end
 
 local function startTweens()
+    if not humanoidroot then
+        warn("HumanoidRootPart not found. Aborting tweens.")
+        return
+    end
+
     local tween1 = TweenService:Create(
         humanoidroot,
         TweenInfo.new(2.5, Enum.EasingStyle.Linear),
@@ -77,6 +85,7 @@ local function startTweens()
     maintainZeroVelocity(tween1)
     tween1:Play()
 end
+
 local function rejoinServer()
     local teleportScript = [[
         repeat task.wait() until game:IsLoaded()
@@ -85,6 +94,7 @@ local function rejoinServer()
     queue_on_teleport(teleportScript)
     TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId)
 end
+
 player.CharacterAdded:Connect(function(character)
     if rejoinqueued then
         rejoinServer()
@@ -94,10 +104,17 @@ player.CharacterAdded:Connect(function(character)
     wait(2)
     startTweens()
 end)
+
 local rejoinDelay = 19 * 60
 spawn(function()
     while wait(rejoinDelay) do
         rejoinqueued = true
     end
 end)
-character:FindFirstChild("Head"):Destroy()
+
+local head = character:FindFirstChild("Head")
+if head then
+    head:Destroy()
+else
+    warn("Head not found in the character.")
+end
