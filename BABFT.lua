@@ -159,7 +159,7 @@ end)
 
 -- Rejoin Logic
 local function rejoinServer()
-    local teleportScript = string.format([[
+    local teleportScript = [[
         repeat task.wait() until game:IsLoaded()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFT.lua'))()
     ]]
