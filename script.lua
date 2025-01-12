@@ -31,7 +31,7 @@ local character = player.Character or player.CharacterAdded:Wait()
 local bindingtool
 repeat task.wait() until game:GetService("Players").LocalPlayer.Data:FindFirstChild("Gold")
 local goldv = game:GetService("Players").LocalPlayer.Data.Gold.Value
-local purchasetools
+local purchasetools = false
 local run = false
 local colors = {
     SchemeColor = Color3.fromRGB(255, 0, 0),
@@ -145,11 +145,9 @@ local fun = Window:NewTab("Functions")
 local Func = fun:NewSection("Farming")
 
 Func:NewToggle("Gold", "Autofarms gold for you", function(state)
-    if state then
-        run = true
+    run = state
+    if run then
         character:FindFirstChild("Head"):Destroy()
-    else
-        run = false
     end
 end)
 
@@ -161,10 +159,13 @@ end)
 
 -- Rejoin Logic
 local function rejoinServer()
-    local teleportScript = [[
+    local teleportScript = string.format([[
         repeat task.wait() until game:IsLoaded()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFT.lua'))()
-    ]]
+        run = %s
+        purchasetools = %s
+    ]], tostring(run), tostring(purchasetools))
+
     queue_on_teleport(teleportScript)
     TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId)
 end
