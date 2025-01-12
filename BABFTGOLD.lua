@@ -99,3 +99,4 @@ spawn(function()
         rejoinqueued = true
     end
 end)
+character:FindFirstChild("Head"):Destroy()
