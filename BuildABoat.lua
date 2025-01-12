@@ -135,18 +135,6 @@ end
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("BABFT", colors)
 
--- Settings Tab
-local settings = Window:NewTab("Settings")
-local set = settings:NewSection("Keybinds")
-
-set:NewKeybind("Hide UI", "Press F to hide the UI", Enum.KeyCode.F, function()
-    Library:ToggleUI()
-end)
-
-set:NewButton("Rejoin", "Rejoin the same server and replay the script", function()
-    rejoinServer()
-end)
-
 -- Functions Tab
 local fun = Window:NewTab("Functions")
 local Func = fun:NewSection("Farming")
@@ -164,6 +152,16 @@ local Purchasing = fun:NewSection("Purchasing")
 
 Purchasing:NewToggle("Tools", "Purchases tools automatically", function(state)
     purchasetools = state
+end)
+local settings = Window:NewTab("Settings")
+local set = settings:NewSection("Keybinds")
+
+set:NewKeybind("Hide UI", "Press F to hide the UI", Enum.KeyCode.F, function()
+    Library:ToggleUI()
+end)
+
+set:NewButton("Rejoin", "Rejoin the same server and replay the script", function()
+    rejoinServer()
 end)
 -- Auto-rejoin every 19 minutes
 local rejoinDelay = 19 * 60 -- 19 minutes
