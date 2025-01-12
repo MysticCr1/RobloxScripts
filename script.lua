@@ -126,6 +126,7 @@ local function rejoinServer()
     local teleportScript = [[
         repeat task.wait() until game:IsLoaded()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFT.lua'))()
+        --RELAUNCH
     ]]
     queue_on_teleport(teleportScript)
     TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId)
