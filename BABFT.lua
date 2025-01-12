@@ -1,23 +1,44 @@
+repeat task.wait() until game:IsLoaded()
+
+-- Notification Function
+function Notification(text)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Made by OperationCryptic",
+        Text = text,
+        Icon = "rbxassetid://111229342765121",
+        Duration = 15,
+    })
+end
+
+Notification("Script loaded successfully")
+
+-- Ensure `queue_on_teleport` is properly set up
+local queue_on_teleport = queue_on_teleport or function(code)
+    if syn and syn.queue_on_teleport then
+        syn.queue_on_teleport(code)
+    elseif queue_on_teleport then
+        queue_on_teleport(code)
+    else
+        warn("Your executor does not support queue_on_teleport.")
+    end
+end
+
 local TweenService = game:GetService("TweenService")
-local queue_on_teleport = queue_on_teleport or function() end
 local RunService = game:GetService("RunService")
 local TeleportService = game:GetService("TeleportService")
 local player = game.Players.LocalPlayer
-local character = player.Character
+local character = player.Character or player.CharacterAdded:Wait()
 local bindingtool
+repeat task.wait() until game:GetService("Players").LocalPlayer.Data:FindFirstChild("Gold")
 local goldv = game:GetService("Players").LocalPlayer.Data.Gold.Value
-local teleportScript = [[
-	loadstring(game:HttpGet('https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/'..readfile('newvape/profiles/commit.txt')..'/loader.lua', true), 'loader')()
-]]
-local purchasetools
+local purchasetools = false
 local run = false
-local SaveValue
 local colors = {
     SchemeColor = Color3.fromRGB(255, 0, 0),
     Background = Color3.fromRGB(20, 20, 20),
     Header = Color3.fromRGB(10, 10, 10),
     TextColor = Color3.fromRGB(255, 255, 255),
-    ElementColor = Color3.fromRGB(20, 20, 20)
+    ElementColor = Color3.fromRGB(20, 20, 20),
 }
 local humanoidroot
 
@@ -57,17 +78,20 @@ local function startTweens()
         TweenInfo.new(30, Enum.EasingStyle.Linear),
         { CFrame = CFrame.new(-51.741737365722656, 46.0748176574707, 8723.8603515625) }
     )
+
     local tween3 = TweenService:Create(
         humanoidroot,
         TweenInfo.new(2.5, Enum.EasingStyle.Linear),
         { CFrame = CFrame.new(-54.751220703125, -351.3304443359375, 9495.1142578125) }
     )
+
     tween2.Completed:Connect(function(playbackState)
         if playbackState == Enum.PlaybackState.Completed then
             maintainZeroVelocity(tween3)
             tween3:Play()
         end
     end)
+
     tween1.Completed:Connect(function(playbackState)
         if playbackState == Enum.PlaybackState.Completed then
             maintainZeroVelocity(tween2)
@@ -103,37 +127,55 @@ end)
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("BABFT", colors)
+
+-- Settings Tab
 local settings = Window:NewTab("Settings")
 local set = settings:NewSection("Keybinds")
+
 set:NewKeybind("Hide UI", "Press F to hide the UI", Enum.KeyCode.F, function()
     Library:ToggleUI()
 end)
+
+set:NewButton("Rejoin", "Rejoin the same server and replay the script", function()
+    rejoinServer()
+end)
+
+-- Functions Tab
 local fun = Window:NewTab("Functions")
 local Func = fun:NewSection("Farming")
+
 Func:NewToggle("Gold", "Autofarms gold for you", function(state)
-    if state then
-        run = true
-        character["Head"]:Destroy()
-    else
-        run = false
+    run = state
+    if run then
+        character:FindFirstChild("Head"):Destroy()
     end
 end)
+
 local Purchasing = fun:NewSection("Purchasing")
+
 Purchasing:NewToggle("Tools", "Purchases tools automatically", function(state)
     purchasetools = state
 end)
 
 -- Rejoin Logic
 local function rejoinServer()
+    local teleportScript = string.format([[
+        repeat task.wait() until game:IsLoaded()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFT.lua'))()
+        run = %s
+        purchasetools = %s
+    ]], tostring(run), tostring(purchasetools))
+
     queue_on_teleport(teleportScript)
-    TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
+    TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId)
 end
-set:NewButton("Rejoin", "Rejoin the same server and replay the script", function()
-    rejoinServer()
-end)
-local rejoinDelay = 19 * 60
+
+-- Auto-rejoin every 19 minutes
+local rejoinDelay = 19 * 60 -- 19 minutes
 spawn(function()
     while wait(rejoinDelay) do
         rejoinServer()
     end
 end)
+
+Notification("Script fully loaded and ready!")
