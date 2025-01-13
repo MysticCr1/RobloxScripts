@@ -11,7 +11,7 @@ function Notification(text)
 end
 
 Notification("Script loaded successfully")
-
+local rejoinqueued
 -- Ensure `queue_on_teleport` is properly set up
 local queue_on_teleport = queue_on_teleport or function(code)
     if syn and syn.queue_on_teleport then
