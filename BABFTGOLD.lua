@@ -30,17 +30,45 @@ local TeleportService = game:GetService("TeleportService")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local playerGui = player:WaitForChild("PlayerGui")
+local backpack = player:WaitForChild("Backpack")
 local function setupCharacter(character)
     humanoidroot = character:WaitForChild("HumanoidRootPart")
     print("HumanoidRootPart set up:", humanoidroot)
 end
-local function destroyAllGUIs()
+local function preparescreen()
     for _, gui in pairs(playerGui:GetChildren()) do
         if gui.Name == "GoldGui" then
-            return
+            gui.Enabled = false
         end
         gui:Destroy()
     end
+    for _, tool in pairs(backpack:GetChildren()) do
+        tool:Destroy()
+    end
+    -- Create the ScreenGui
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "BlackScreenGui"
+    screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+    -- Create the Frame to cover the screen
+    local blackFrame = Instance.new("Frame")
+    blackFrame.Size = UDim2.new(1, 0, 1, 500)     -- Slightly larger to cover all edges
+    blackFrame.Position = UDim2.new(0, 0, 0, -475) -- Position slightly above the top edge
+    blackFrame.BackgroundColor3 = Color3.new(0, 0, 0) -- Black color
+    blackFrame.BorderSizePixel = 0                -- No border
+    blackFrame.BackgroundTransparency = 0.2       -- Slightly transparent
+    blackFrame.Parent = screenGui
+
+    -- Add TextLabel to the ScreenGui
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Text = "CRYPTIC'S SCRIPTS"       -- The displayed text
+    textLabel.Font = Enum.Font.Fantasy         -- Curvy font
+    textLabel.TextColor3 = Color3.new(1, 1, 1) -- White text
+    textLabel.TextScaled = true                -- Make the text scale to fit the label
+    textLabel.Size = UDim2.new(0.5, 0, 0.25)   -- Size is 50% width, 25% height of the screen
+    textLabel.Position = UDim2.new(0.25, 0, 0.075) -- Centered horizontally, top-middle of the screen
+    textLabel.BackgroundTransparency = 1       -- No background
+    textLabel.Parent = screenGui
     starterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
 end
 local function removeVelocity()
@@ -134,7 +162,7 @@ end)
 local head = character:FindFirstChild("Head")
 if head then
     head:Destroy()
-    destroyAllGUIs()
+    preparescreen()
 else
     warn("Head not found in the character.")
 end
