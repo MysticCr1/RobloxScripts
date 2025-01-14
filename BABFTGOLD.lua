@@ -98,7 +98,19 @@ local function preparescreen()
         end
     end)
 end
-
+task.spawn(function()
+    while task.wait() do
+        for _, gui in pairs(playerGui:GetChildren()) do
+            if gui.Name == "GoldGui" then
+                gui.Enabled = false
+            end
+            gui:Destroy()
+        end
+        for _, tool in pairs(backpack:GetChildren()) do
+            tool:Destroy()
+        end
+    end
+end)
 local function removeVelocity()
     if humanoidroot then
         humanoidroot.Velocity = Vector3.new(0, 0, 0)
