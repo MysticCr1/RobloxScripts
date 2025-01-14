@@ -183,10 +183,6 @@ local function rejoinServer()
 end
 
 player.CharacterAdded:Connect(function(character)
-    if rejoinqueued then
-        rejoinServer()
-        return
-    end
     setupCharacter(character)
     wait(2)
     startTweens()
@@ -195,7 +191,7 @@ end)
 local rejoinDelay = 19 * 60
 spawn(function()
     while wait(rejoinDelay) do
-        rejoinqueued = true
+        rejoinServer()
     end
 end)
 
