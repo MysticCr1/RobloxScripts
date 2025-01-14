@@ -29,11 +29,18 @@ local RunService = game:GetService("RunService")
 local TeleportService = game:GetService("TeleportService")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
+local playerGui = player:WaitForChild("PlayerGui")
 local function setupCharacter(character)
     humanoidroot = character:WaitForChild("HumanoidRootPart")
     print("HumanoidRootPart set up:", humanoidroot)
 end
 local function destroyAllGUIs()
+    for _, gui in pairs(playerGui:GetChildren()) do
+        if gui.Name == "GoldGui" then
+            return
+        end
+        gui:Destroy()
+    end
     starterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
 end
 local function removeVelocity()
