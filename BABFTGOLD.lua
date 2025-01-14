@@ -57,6 +57,7 @@ local function preparescreen()
     -- Create the ScreenGui
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "BlackScreenGui"
+    screenGui.ResetOnSpawn = false
     screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
     -- Create the Frame to cover the screen
