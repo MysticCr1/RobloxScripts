@@ -24,6 +24,7 @@ local queue_on_teleport = queue_on_teleport or function(code)
 end
 
 local TweenService = game:GetService("TweenService")
+local starterGui = game:GetService("StarterGui")
 local RunService = game:GetService("RunService")
 local TeleportService = game:GetService("TeleportService")
 local player = game.Players.LocalPlayer
@@ -32,7 +33,9 @@ local function setupCharacter(character)
     humanoidroot = character:WaitForChild("HumanoidRootPart")
     print("HumanoidRootPart set up:", humanoidroot)
 end
-
+local function destroyAllGUIs()
+    starterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
+end
 local function removeVelocity()
     if humanoidroot then
         humanoidroot.Velocity = Vector3.new(0, 0, 0)
@@ -74,7 +77,7 @@ local function startTweens()
     local tween3 = TweenService:Create(
         humanoidroot,
         TweenInfo.new(2.5, Enum.EasingStyle.Linear),
-        { CFrame = CFrame.new(-54.751220703125, -351.3304443359375, 9495.1142578125) }
+        { CFrame = CFrame.new(-54.751220703125, -351.3304443359375, 9489.1142578125) }
     )
 
     tween2.Completed:Connect(function(playbackState)
@@ -98,7 +101,7 @@ end
 local function rejoinServer()
     local teleportScript = [[
         repeat task.wait() until game:IsLoaded()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFTGOLD.lua.lua'))()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFTGOLD.lua'))()
     ]]
     queue_on_teleport(teleportScript)
     TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId)
@@ -124,6 +127,7 @@ end)
 local head = character:FindFirstChild("Head")
 if head then
     head:Destroy()
+    destroyAllGUIs()
 else
     warn("Head not found in the character.")
 end
