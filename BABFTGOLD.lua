@@ -33,7 +33,6 @@ local playerGui = player:WaitForChild("PlayerGui")
 local backpack = player:WaitForChild("Backpack")
 local function setupCharacter(character)
     humanoidroot = character:WaitForChild("HumanoidRootPart")
-    print("HumanoidRootPart set up:", humanoidroot)
 end
 local function preparescreen()
     for _, gui in pairs(playerGui:GetChildren()) do
