@@ -1,6 +1,8 @@
 repeat task.wait() until game:IsLoaded()
 
--- Notification Function
+local timeLabel = Instance.new("TextLabel") -- TextLabel for the timer
+local startTime = os.time() -- Track the start time
+
 function Notification(text)
     game.StarterGui:SetCore("SendNotification", {
         Title = "Made by OperationCryptic",
@@ -34,6 +36,14 @@ local backpack = player:WaitForChild("Backpack")
 local function setupCharacter(character)
     humanoidroot = character:WaitForChild("HumanoidRootPart")
 end
+
+local function updateTimer()
+    local elapsedTime = os.time() - startTime
+    local minutes = math.floor(elapsedTime / 60)
+    local seconds = elapsedTime % 60
+    timeLabel.Text = string.format("Time Since Rejoin: %02d:%02d", minutes, seconds)
+end
+
 local function preparescreen()
     for _, gui in pairs(playerGui:GetChildren()) do
         if gui.Name == "GoldGui" then
@@ -59,17 +69,35 @@ local function preparescreen()
     blackFrame.Parent = screenGui
 
     -- Add TextLabel to the ScreenGui
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Text = "CRYPTIC'S SCRIPTS"       -- The displayed text
-    textLabel.Font = Enum.Font.Fantasy         -- Curvy font
-    textLabel.TextColor3 = Color3.new(1, 1, 1) -- White text
-    textLabel.TextScaled = true                -- Make the text scale to fit the label
-    textLabel.Size = UDim2.new(0.5, 0, 0.25)   -- Size is 50% width, 25% height of the screen
-    textLabel.Position = UDim2.new(0.25, 0, 0.075) -- Centered horizontally, top-middle of the screen
-    textLabel.BackgroundTransparency = 1       -- No background
-    textLabel.Parent = screenGui
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Text = "CRYPTIC'S SCRIPTS"       -- The displayed text
+    titleLabel.Font = Enum.Font.Fantasy         -- Curvy font
+    titleLabel.TextColor3 = Color3.new(1, 1, 1) -- White text
+    titleLabel.TextScaled = true                -- Make the text scale to fit the label
+    titleLabel.Size = UDim2.new(0.5, 0, 0.25)   -- Size is 50% width, 25% height of the screen
+    titleLabel.Position = UDim2.new(0.25, 0, 0.075) -- Centered horizontally, top-middle of the screen
+    titleLabel.BackgroundTransparency = 1       -- No background
+    titleLabel.Parent = screenGui
+
+    -- Add Timer TextLabel to the ScreenGui
+    timeLabel.Font = Enum.Font.Fantasy         -- Curvy font
+    timeLabel.TextColor3 = Color3.new(1, 1, 1) -- White text
+    timeLabel.TextScaled = true                -- Make the text scale to fit the label
+    timeLabel.Size = UDim2.new(0.5, 0, 0.25)   -- Size is 50% width, 25% height of the screen
+    timeLabel.Position = UDim2.new(0.25, 0, 0.3) -- Slightly below the title
+    timeLabel.BackgroundTransparency = 1       -- No background
+    timeLabel.Parent = screenGui
+
     starterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
+
+    -- Update timer every second
+    spawn(function()
+        while task.wait(1) do
+            updateTimer()
+        end
+    end)
 end
+
 local function removeVelocity()
     if humanoidroot then
         humanoidroot.Velocity = Vector3.new(0, 0, 0)
