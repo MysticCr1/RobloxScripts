@@ -57,8 +57,8 @@ local function preparescreen()
     -- Create the ScreenGui
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "BlackScreenGui"
-    screenGui.ResetOnSpawn = false
     screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    screenGui.ResetOnSpawn = false
 
     -- Create the Frame to cover the screen
     local blackFrame = Instance.new("Frame")
@@ -85,7 +85,7 @@ local function preparescreen()
     timeLabel.TextColor3 = Color3.new(1, 1, 1) -- White text
     timeLabel.TextScaled = true                -- Make the text scale to fit the label
     timeLabel.Size = UDim2.new(0.5, 0, 0.25)   -- Size is 50% width, 25% height of the screen
-    timeLabel.Position = UDim2.new(0.25, 0, 0.3) -- Slightly below the title
+    timeLabel.Position = UDim2.new(0.25, 0, 0.8) -- Slightly below the title
     timeLabel.BackgroundTransparency = 1       -- No background
     timeLabel.Parent = screenGui
 
