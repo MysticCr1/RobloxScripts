@@ -58,12 +58,6 @@ local function hideguis()
     end
 end
 local function preparescreen()
-    for _, gui in pairs(playerGui:GetChildren()) do
-        if gui.Name == "GoldGui" then
-            gui.Enabled = false
-        end
-        gui:Destroy()
-    end
     local backpack = player:WaitForChild("Backpack")
     for _, tool in pairs(backpack:GetDescendants()) do
         tool:Destroy()
