@@ -1,20 +1,17 @@
 repeat task.wait() until game:IsLoaded()
 
-local timeLabel = Instance.new("TextLabel") -- TextLabel for the timer
-local startTime = os.time() -- Track the start time
+local timeLabel = Instance.new("TextLabel")
+local gptmLabel = Instance.new("TextLabel")
+local startTime = os.time()
+local TweenService = game:GetService("TweenService")
+local starterGui = game:GetService("StarterGui")
+local RunService = game:GetService("RunService")
+local player = game.Players.LocalPlayer
+local Players = game.Players
+local character = player.Character or player.CharacterAdded:Wait()
+local playerGui = player:WaitForChild("PlayerGui")
+local goldData = player:WaitForChild("Data"):WaitForChild("Gold")
 
-function Notification(text)
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "Made by OperationCryptic",
-        Text = text,
-        Icon = "rbxassetid://111229342765121",
-        Duration = 15,
-    })
-end
-
-Notification("Script loaded successfully")
-local rejoinqueued
--- Ensure `queue_on_teleport` is properly set up
 local queue_on_teleport = queue_on_teleport or function(code)
     if syn and syn.queue_on_teleport then
         syn.queue_on_teleport(code)
@@ -25,14 +22,8 @@ local queue_on_teleport = queue_on_teleport or function(code)
     end
 end
 
-local TweenService = game:GetService("TweenService")
-local starterGui = game:GetService("StarterGui")
-local RunService = game:GetService("RunService")
-local TeleportService = game:GetService("TeleportService")
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local playerGui = player:WaitForChild("PlayerGui")
-local backpack = player:WaitForChild("Backpack")
+local initialGold = goldData.Value
+
 local function setupCharacter(character)
     humanoidroot = character:WaitForChild("HumanoidRootPart")
 end
@@ -41,9 +32,31 @@ local function updateTimer()
     local elapsedTime = os.time() - startTime
     local minutes = math.floor(elapsedTime / 60)
     local seconds = elapsedTime % 60
-    timeLabel.Text = string.format("Time Since Rejoin: %02d:%02d", minutes, seconds)
+    timeLabel.Text = string.format("Time Since Execute: %02d:%02d", minutes, seconds)
 end
 
+local function updateAverageGPTM()
+    local elapsedTotalTime = os.time() - startTime
+    if elapsedTotalTime > 0 then
+        local currentGold = goldData.Value
+        local totalGoldEarned = currentGold - initialGold
+        gptmLabel.Text = string.format("Gold Earned: %.2f", totalGoldEarned)
+    end
+end
+
+local GC = getconnections or get_signal_cons
+for i, v in pairs(GC(Players.LocalPlayer.Idled)) do
+    if v["Disable"] then
+        v["Disable"](v)
+    elseif v["Disconnect"] then
+        v["Disconnect"](v)
+    end
+end
+local function hideguis()
+    for _, gui in pairs(playerGui:GetChildren()) do
+        if gui.Name == "BlackScreenGui" then else gui:Destroy() end
+    end
+end
 local function preparescreen()
     for _, gui in pairs(playerGui:GetChildren()) do
         if gui.Name == "GoldGui" then
@@ -51,66 +64,59 @@ local function preparescreen()
         end
         gui:Destroy()
     end
-    for _, tool in pairs(backpack:GetChildren()) do
+    local backpack = player:WaitForChild("Backpack")
+    for _, tool in pairs(backpack:GetDescendants()) do
         tool:Destroy()
     end
-    -- Create the ScreenGui
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "BlackScreenGui"
     screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     screenGui.ResetOnSpawn = false
-
-    -- Create the Frame to cover the screen
     local blackFrame = Instance.new("Frame")
-    blackFrame.Size = UDim2.new(1, 0, 1, 500)     -- Slightly larger to cover all edges
-    blackFrame.Position = UDim2.new(0, 0, 0, -475) -- Position slightly above the top edge
-    blackFrame.BackgroundColor3 = Color3.new(0, 0, 0) -- Black color
-    blackFrame.BorderSizePixel = 0                -- No border
-    blackFrame.BackgroundTransparency = 0.2       -- Slightly transparent
+    blackFrame.Size = UDim2.new(1, 0, 1, 500)
+    blackFrame.Position = UDim2.new(0, 0, 0, -475)
+    blackFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+    blackFrame.BorderSizePixel = 0
+    blackFrame.BackgroundTransparency = 0.2
+    blackFrame.ZIndex = 11
     blackFrame.Parent = screenGui
-
-    -- Add TextLabel to the ScreenGui
     local titleLabel = Instance.new("TextLabel")
-    titleLabel.Text = "CRYPTIC'S SCRIPTS"       -- The displayed text
-    titleLabel.Font = Enum.Font.Fantasy         -- Curvy font
-    titleLabel.TextColor3 = Color3.new(1, 1, 1) -- White text
-    titleLabel.TextScaled = true                -- Make the text scale to fit the label
-    titleLabel.Size = UDim2.new(0.5, 0, 0.25)   -- Size is 50% width, 25% height of the screen
-    titleLabel.Position = UDim2.new(0.25, 0, 0.075) -- Centered horizontally, top-middle of the screen
-    titleLabel.BackgroundTransparency = 1       -- No background
+    titleLabel.Text = "CRYPTIC'S SCRIPTS"
+    titleLabel.Font = Enum.Font.Fantasy
+    titleLabel.TextColor3 = Color3.new(1, 1, 1)
+    titleLabel.TextScaled = true
+    titleLabel.Size = UDim2.new(0.5, 0, 0.25)
+    titleLabel.Position = UDim2.new(0.25, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.ZIndex = 11
     titleLabel.Parent = screenGui
-
-    -- Add Timer TextLabel to the ScreenGui
-    timeLabel.Font = Enum.Font.Fantasy         -- Curvy font
-    timeLabel.TextColor3 = Color3.new(1, 1, 1) -- White text
-    timeLabel.TextScaled = true                -- Make the text scale to fit the label
-    timeLabel.Size = UDim2.new(0.5, 0, 0.25)   -- Size is 50% width, 25% height of the screen
-    timeLabel.Position = UDim2.new(0.25, 0, 0.8) -- Slightly below the title
-    timeLabel.BackgroundTransparency = 1       -- No background
+    timeLabel.Font = Enum.Font.Fantasy
+    timeLabel.TextColor3 = Color3.new(1, 1, 1)
+    timeLabel.TextScaled = true
+    timeLabel.Size = UDim2.new(0.1, 0, 0.0625) -- 1/4th size
+    timeLabel.Position = UDim2.new(0.15, 0, 0.25)
+    timeLabel.BackgroundTransparency = 1
+    timeLabel.ZIndex = 11
     timeLabel.Parent = screenGui
-
+    gptmLabel.Font = Enum.Font.Fantasy
+    gptmLabel.TextColor3 = Color3.new(1, 1, 1)
+    gptmLabel.TextScaled = true
+    gptmLabel.Size = UDim2.new(0.1, 0, 0.0625) -- 1/4th size
+    gptmLabel.Position = UDim2.new(0.25, 0, 0.25)
+    gptmLabel.BackgroundTransparency = 1
+    gptmLabel.ZIndex = 11
+    gptmLabel.Parent = screenGui
     starterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
-
-    -- Update timer every second
     spawn(function()
-        while task.wait(1) do
+        while task.wait() do
             updateTimer()
+            updateAverageGPTM()
+            hideguis()
         end
     end)
 end
-task.spawn(function()
-    while task.wait() do
-        for _, gui in pairs(playerGui:GetChildren()) do
-            if gui.Name == "GoldGui" then
-                gui.Enabled = false
-            end
-            gui:Destroy()
-        end
-        for _, tool in pairs(backpack:GetChildren()) do
-            tool:Destroy()
-        end
-    end
-end)
+
+
 local function removeVelocity()
     if humanoidroot then
         humanoidroot.Velocity = Vector3.new(0, 0, 0)
@@ -136,69 +142,53 @@ local function startTweens()
         warn("HumanoidRootPart not found. Aborting tweens.")
         return
     end
-
     local tween1 = TweenService:Create(
         humanoidroot,
-        TweenInfo.new(2.5, Enum.EasingStyle.Linear),
+        TweenInfo.new(0.5, Enum.EasingStyle.Linear),
         { CFrame = CFrame.new(-51.741737365722656, 46.0748176574707, -159.60386657714844) }
     )
-
     local tween2 = TweenService:Create(
         humanoidroot,
-        TweenInfo.new(30, Enum.EasingStyle.Linear),
+        TweenInfo.new(23, Enum.EasingStyle.Linear),
         { CFrame = CFrame.new(-51.741737365722656, 46.0748176574707, 8723.8603515625) }
     )
-
     local tween3 = TweenService:Create(
         humanoidroot,
-        TweenInfo.new(2.5, Enum.EasingStyle.Linear),
+        TweenInfo.new(0.5, Enum.EasingStyle.Linear),
         { CFrame = CFrame.new(-54.751220703125, -351.3304443359375, 9489.1142578125) }
     )
-
     tween2.Completed:Connect(function(playbackState)
         if playbackState == Enum.PlaybackState.Completed then
             maintainZeroVelocity(tween3)
             tween3:Play()
         end
     end)
-
     tween1.Completed:Connect(function(playbackState)
         if playbackState == Enum.PlaybackState.Completed then
             maintainZeroVelocity(tween2)
             tween2:Play()
         end
     end)
-
     maintainZeroVelocity(tween1)
     tween1:Play()
 end
 
-local function rejoinServer()
-    local teleportScript = [[
-        repeat task.wait() until game:IsLoaded()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFTGOLD.lua'))()
-    ]]
-    queue_on_teleport(teleportScript)
-    TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId)
-end
-
 player.CharacterAdded:Connect(function(character)
+    workspace:WaitForChild("ClaimRiverResultsGold"):FireServer()
     setupCharacter(character)
     wait(2)
     startTweens()
-end)
-
-local rejoinDelay = 19 * 60
-spawn(function()
-    while wait(rejoinDelay) do
-        rejoinServer()
-    end
 end)
 
 local head = character:FindFirstChild("Head")
 if head then
     head:Destroy()
     preparescreen()
+    local teleportScript = [[
+        repeat task.wait() until game:IsLoaded()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFTGOLD.lua'))()
+    ]]
+    queue_on_teleport(teleportScript)
 else
     warn("Head not found in the character.")
 end
