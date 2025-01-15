@@ -138,17 +138,17 @@ local function startTweens()
     end
     local tween1 = TweenService:Create(
         humanoidroot,
-        TweenInfo.new(0.5, Enum.EasingStyle.Linear),
-        { CFrame = CFrame.new(-51.741737365722656, 46.0748176574707, -159.60386657714844) }
+        TweenInfo.new(0.25, Enum.EasingStyle.Linear),
+        { CFrame = CFrame.new(-51.741737365722656, 46.0748176574707, 750.60386657714844) }
     )
     local tween2 = TweenService:Create(
         humanoidroot,
-        TweenInfo.new(23, Enum.EasingStyle.Linear),
+        TweenInfo.new(20, Enum.EasingStyle.Linear),
         { CFrame = CFrame.new(-51.741737365722656, 46.0748176574707, 8723.8603515625) }
     )
     local tween3 = TweenService:Create(
         humanoidroot,
-        TweenInfo.new(0.5, Enum.EasingStyle.Linear),
+        TweenInfo.new(0.25, Enum.EasingStyle.Linear),
         { CFrame = CFrame.new(-54.751220703125, -351.3304443359375, 9489.1142578125) }
     )
     tween2.Completed:Connect(function(playbackState)
