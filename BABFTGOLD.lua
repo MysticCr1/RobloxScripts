@@ -185,24 +185,24 @@ if head then
     queue_on_teleport(teleportScript)
     local gs = game:GetService 'GuiService'
     local reconnectDisabledList = {
-        [Enum.ConnectionError.DisconnectLuaKick] = true,
-        [Enum.ConnectionError.DisconnectSecurityKeyMismatch] = true,
-        [Enum.ConnectionError.DisconnectNewSecurityKeyMismatch] = true,
-        [Enum.ConnectionError.DisconnectDuplicateTicket] = true,
-        [Enum.ConnectionError.DisconnectWrongVersion] = true,
-        [Enum.ConnectionError.DisconnectProtocolMismatch] = true,
-        [Enum.ConnectionError.DisconnectBadhash] = true,
-        [Enum.ConnectionError.DisconnectIllegalTeleport] = true,
-        [Enum.ConnectionError.DisconnectDuplicatePlayer] = true,
-        [Enum.ConnectionError.DisconnectCloudEditKick] = true,
-        [Enum.ConnectionError.DisconnectOnRemoteSysStats] = true,
-        [Enum.ConnectionError.DisconnectRaknetErrors] = true,
-        [Enum.ConnectionError.PlacelaunchFlooded] = true,
-        [Enum.ConnectionError.PlacelaunchHashException] = true,
-        [Enum.ConnectionError.PlacelaunchHashExpired] = true,
-        [Enum.ConnectionError.PlacelaunchUnauthorized] = true,
-        [Enum.ConnectionError.PlacelaunchUserLeft] = true,
-        [Enum.ConnectionError.PlacelaunchRestricted] = true,
+        [Enum.ConnectionError.DisconnectLuaKick] = false,
+        [Enum.ConnectionError.DisconnectSecurityKeyMismatch] = false,
+        [Enum.ConnectionError.DisconnectNewSecurityKeyMismatch] = false,
+        [Enum.ConnectionError.DisconnectDuplicateTicket] = false,
+        [Enum.ConnectionError.DisconnectWrongVersion] = false,
+        [Enum.ConnectionError.DisconnectProtocolMismatch] = false,
+        [Enum.ConnectionError.DisconnectBadhash] = false,
+        [Enum.ConnectionError.DisconnectIllegalTeleport] = false,
+        [Enum.ConnectionError.DisconnectDuplicatePlayer] = false,
+        [Enum.ConnectionError.DisconnectCloudEditKick] = false,
+        [Enum.ConnectionError.DisconnectOnRemoteSysStats] = false,
+        [Enum.ConnectionError.DisconnectRaknetErrors] = false,
+        [Enum.ConnectionError.PlacelaunchFlooded] = false,
+        [Enum.ConnectionError.PlacelaunchHashException] = false,
+        [Enum.ConnectionError.PlacelaunchHashExpired] = false,
+        [Enum.ConnectionError.PlacelaunchUnauthorized] = false,
+        [Enum.ConnectionError.PlacelaunchUserLeft] = false,
+        [Enum.ConnectionError.PlacelaunchRestricted] = false,
     }
 
     gs.ErrorMessageChanged:connect(
@@ -212,7 +212,7 @@ if head then
             if error_type == Enum.ConnectionError.DisconnectErrors and
                 not reconnectDisabledList[error_code] then
                 print('Disconnect registered!')
-                while task.wait(5) do
+                while task.wait(1) do
                     game:GetService 'TeleportService':TeleportToPlaceInstance(
                         game.PlaceId, game.JobId)
                 end
