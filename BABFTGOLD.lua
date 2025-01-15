@@ -2,7 +2,7 @@ repeat task.wait() until game:IsLoaded()
 
 local timeLabel = Instance.new("TextLabel")
 local gptmLabel = Instance.new("TextLabel")
-local startTime = os.time()
+local startTime = getgenv().startTime or os.time()
 local TweenService = game:GetService("TweenService")
 local starterGui = game:GetService("StarterGui")
 local RunService = game:GetService("RunService")
@@ -11,7 +11,6 @@ local Players = game.Players
 local character = player.Character or player.CharacterAdded:Wait()
 local playerGui = player:WaitForChild("PlayerGui")
 local goldData = player:WaitForChild("Data"):WaitForChild("Gold")
-
 local queue_on_teleport = queue_on_teleport or function(code)
     if syn and syn.queue_on_teleport then
         syn.queue_on_teleport(code)
@@ -178,11 +177,6 @@ local head = character:FindFirstChild("Head")
 if head then
     head:Destroy()
     preparescreen()
-    local teleportScript = [[
-        repeat task.wait() until game:IsLoaded()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFTGOLD.lua'))()
-    ]]
-    queue_on_teleport(teleportScript)
     local gs = game:GetService 'GuiService'
     local reconnectDisabledList = {
         [Enum.ConnectionError.DisconnectLuaKick] = false,
@@ -209,8 +203,13 @@ if head then
         function()
             local error_code = gs:GetErrorCode()
             local error_type = gs:GetErrorType()
-            if error_type == Enum.ConnectionError.DisconnectErrors and
-                not reconnectDisabledList[error_code] then
+            if error_type == Enum.ConnectionError.DisconnectErrors and not reconnectDisabledList[error_code] then
+                local teleportScript = string.format([[
+                    getgenv().startTime = %s
+                    repeat task.wait() until game:IsLoaded()
+                    loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/BABFTGOLD.lua'))()
+            ]], startTime)
+                queue_on_teleport(teleportScript)
                 print('Disconnect registered!')
                 while task.wait(1) do
                     game:GetService 'TeleportService':TeleportToPlaceInstance(
