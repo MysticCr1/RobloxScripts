@@ -29,10 +29,20 @@ end
 
 local function updateTimer()
     local elapsedTime = os.time() - startTime
-    local minutes = math.floor(elapsedTime / 60)
+    local days = math.floor(elapsedTime / 86400) -- 86400 seconds in a day
+    local hours = math.floor((elapsedTime % 86400) / 3600) -- 3600 seconds in an hour
+    local minutes = math.floor((elapsedTime % 3600) / 60) -- 60 seconds in a minute
     local seconds = elapsedTime % 60
-    timeLabel.Text = string.format("Time Since Execute: %02d:%02d", minutes, seconds)
+    
+    if days > 0 then
+        timeLabel.Text = string.format("Time Since Execute: %d days %02d:%02d:%02d", days, hours, minutes, seconds)
+    elseif hours > 0 then
+        timeLabel.Text = string.format("Time Since Execute: %02d:%02d:%02d", hours, minutes, seconds)
+    else
+        timeLabel.Text = string.format("Time Since Execute: %02d:%02d", minutes, seconds)
+    end
 end
+
 
 local function updateAverageGPTM()
     local elapsedTotalTime = os.time() - startTime
