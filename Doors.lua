@@ -53,7 +53,7 @@ run.RenderStepped:Connect(function()
                     textLabel.TextColor3 = Color3.new(1, 1, 1)
                     textLabel.TextStrokeTransparency = 0.5
                     textLabel.Font = Enum.Font.SourceSansBold
-                    textLabel.TextScaled = false
+                    textLabel.TextScaled = true
                     textLabel.Parent = billboard
                 end
             elseif lever then
@@ -79,7 +79,7 @@ run.RenderStepped:Connect(function()
                     textLabel.TextColor3 = Color3.new(1, 1, 1)
                     textLabel.TextStrokeTransparency = 0.5
                     textLabel.Font = Enum.Font.SourceSansBold
-                    textLabel.TextScaled = false
+                    textLabel.TextScaled = true
                     textLabel.Parent = billboard
                 end
             end
