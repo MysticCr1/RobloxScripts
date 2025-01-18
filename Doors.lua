@@ -17,7 +17,7 @@ run.RenderStepped:Connect(function()
         if dupe then
             local doorparts = dupe.Parent:FindFirstChild("Parts")
             for _, part in pairs(doorparts:GetChildren()) do
-                if part.Name == "DoorFrame" and not part:FindFirstChild("dupehighlight") and dupeesp then
+                if part.Name == "DoorFrame" and not part:FindFirstChild("dupehighlight") and dupeesp and part:IsA("Model") then
                     local highlight = Instance.new("Highlight")
                     highlight.Name = "dupehighlight"
                     highlight.Adornee = part
@@ -53,7 +53,7 @@ run.RenderStepped:Connect(function()
                     textLabel.TextColor3 = Color3.new(1, 1, 1)
                     textLabel.TextStrokeTransparency = 0.5
                     textLabel.Font = Enum.Font.SourceSansBold
-                    textLabel.TextScaled = true
+                    textLabel.TextScaled = false
                     textLabel.Parent = billboard
                 end
             elseif lever then
@@ -79,7 +79,7 @@ run.RenderStepped:Connect(function()
                     textLabel.TextColor3 = Color3.new(1, 1, 1)
                     textLabel.TextStrokeTransparency = 0.5
                     textLabel.Font = Enum.Font.SourceSansBold
-                    textLabel.TextScaled = true
+                    textLabel.TextScaled = false
                     textLabel.Parent = billboard
                 end
             end
