@@ -15,5 +15,5 @@ if game.PlaceId == 6516141723 then
   queue_on_teleport(teleportScript)
 end
 if game.PlaceId == 10449761463 then
-    print("TSB")
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/TSB.lua'))()
 end
