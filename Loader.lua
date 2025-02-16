@@ -8,7 +8,7 @@ local queue_on_teleport = queue_on_teleport or function(code)
     end
 end
 if game.PlaceId == 6516141723 then
-  local teleportScript = string.format([[
+  local teleportScript = [[
                     repeat task.wait() until game:IsLoaded()
                     loadstring(game:HttpGet('https://raw.githubusercontent.com/MysticCr1/RobloxScripts/refs/heads/scripts/Doors.lua'))()
   ]]
