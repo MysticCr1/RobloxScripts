@@ -93,3 +93,14 @@ local function onAnimationPlayed(animTrack)
     end
 end
 game.Players.LocalPlayer.Character.Humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+local function onAnimationPlayed(animTrack)
+    if animTrack.Animation.AnimationId == "rbxassetid://16571461202" then
+        Pausecamera()
+        wait(0.3)
+        hrp.CFrame = CFrame.new(438.7888488769531, 439.51055908203125, -376.19354248046875)
+        wait(0.7)
+        UnPausecamera()
+        hrp.CFrame = CFrame.new(posTable.originalPos)
+    end
+end
+game.Players.LocalPlayer.Character.Humanoid.AnimationPlayed:Connect(onAnimationPlayed)
