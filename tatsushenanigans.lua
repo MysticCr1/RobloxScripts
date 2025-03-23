@@ -46,8 +46,12 @@ local function subtitle(move, text)
     game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild(move).Base.Reuse.Visible = true   
 end
 task.spawn(function()
+    local hasdied = false
     repeat
         wait()
+        if humanoid.Health == 0 then
+            hasdied = true
+        end
         if m1.Text == "Crushing Pull" then
             subtitle("1", "Instakill")
         end
@@ -60,7 +64,7 @@ task.spawn(function()
         if m4.Text == "Expulsive Push" then
             subtitle("4", "Normal")
         end
-    until not true
+    until hasdied
 end)
 local function onAnimationPlayed(animTrack)
     if animTrack.Animation.AnimationId == "rbxassetid://16139108718" then
@@ -83,8 +87,8 @@ local function onAnimationPlayed(animTrack)
         end)
         repeat
             wait()
-            char.HumanoidRootPart.CFrame = CFrame.new(char.HumanoidRootPart.Position) + Vector3.new(0,-2,0)
-            char.HumanoidRootPart.CFrame = CFrame.new(char.HumanoidRootPart.Position) * CFrame.Angles(math.rad(-90), 0, 0)
+            character.HumanoidRootPart.CFrame = CFrame.new(character.HumanoidRootPart.Position) + Vector3.new(0,-2,0)
+            character.HumanoidRootPart.CFrame = CFrame.new(character.HumanoidRootPart.Position) * CFrame.Angles(math.rad(-90), 0, 0)
         until not flip
     end
 end
