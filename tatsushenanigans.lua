@@ -1,7 +1,26 @@
-local camera = workspace.CurrentCamera
+local Players = game:GetService("Players")
 local player = game.Players.LocalPlayer
-local char = player.Character
-local hrp = char.HumanoidRootPart
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local hrp = character:WaitForChild("HumanoidRootPart")
+local playerGui = player.PlayerGui
+local hotbar = playerGui:FindFirstChild("Hotbar")
+local backpack = hotbar:FindFirstChild("Backpack")
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+local screengui = playerGui:FindFirstChild("ScreenGui")
+local ultbar = screengui:FindFirstChild("MagicHealth")
+local ultcolor = ultbar:FindFirstChild("Health")
+local ulttext = ultbar:FindFirstChild("TextLabel")
+local Players = game:GetService("Players")
+local camera = workspace.CurrentCamera
+local baseButton = hotbarFrame:FindFirstChild("1").Base
+local m1 = baseButton.ToolName
+local baseButton = hotbarFrame:FindFirstChild("2").Base
+local m2 = baseButton.ToolName
+local baseButton = hotbarFrame:FindFirstChild("3").Base
+local m3 = baseButton.ToolName
+local baseButton = hotbarFrame:FindFirstChild("4").Base
+local m4 = baseButton.ToolName
 
 local flip = false
 
@@ -26,21 +45,23 @@ local function subtitle(move, text)
     game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild(move).Base.Reuse.Reuse.Text = text
     game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild(move).Base.Reuse.Visible = true   
 end
-repeat
-    wait()
-    if game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild("1").Base.ToolName.Text == "Crushing Pull" then
-        subtitle("1", "Instakill")
-    end
-    if game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild("2").Base.ToolName.Text == "Windstorm Fury" then
-        subtitle("2", "Stun (Janky)")
-    end
-    if game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild("3").Base.ToolName.Text == "Stone Coffin" then
-        subtitle("3", "Normal")
-    end
-    if game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild("4").Base.ToolName.Text == "Expulsive Push" then
-        subtitle("4", "Normal")
-    end
-until not true
+task.spawn(function()
+    repeat
+        wait()
+        if m1.Text == "Crushing Pull" then
+            subtitle("1", "Instakill")
+        end
+        if m2.Text == "Windstorm Fury" then
+            subtitle("2", "Stun (Janky)")
+        end
+        if m3.Text == "Stone Coffin" then
+            subtitle("3", "Normal")
+        end
+        if m4.Text == "Expulsive Push" then
+            subtitle("4", "Normal")
+        end
+    until not true
+end)
 local function onAnimationPlayed(animTrack)
     if animTrack.Animation.AnimationId == "rbxassetid://16139108718" then
         posTable.originalPos = hrp.Position
