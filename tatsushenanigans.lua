@@ -19,18 +19,32 @@ function UnPausecamera()
         camera.CameraSubject = player.Character.Humanoid
     end
 end
+
+--indicatorbullshit
 local function subtitle(move, text)
     game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild(move).Base.Reuse.Text = text
     game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild(move).Base.Reuse.Reuse.Text = text
     game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild(move).Base.Reuse.Visible = true   
 end
-
-
+repeat
+    wait()
+    if game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild("1").Base.ToolName.Text == "Crushing Pull" then
+        subtitle("1", "Instakill")
+    end
+    if game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild("2").Base.ToolName.Text == "Windstorm Fury" then
+        subtitle("2", "Stun (Janky)")
+    end
+    if game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild("3").Base.ToolName.Text == "Stone Coffin" then
+        subtitle("3", "Normal")
+    end
+    if game.Players.LocalPlayer.PlayerGui:FindFirstChild("Hotbar"):FindFirstChild("Backpack"):FindFirstChild("Hotbar"):FindFirstChild("4").Base.ToolName.Text == "Expulsive Push" then
+        subtitle("4", "Normal")
+    end
+until not true
 local function onAnimationPlayed(animTrack)
     if animTrack.Animation.AnimationId == "rbxassetid://16139108718" then
         posTable.originalPos = hrp.Position
         Pausecamera()
-        hrp.CFrame = hrp.CFrame * CFrame.new(0, -50, 0)
         wait(0.3)
         hrp.CFrame = hrp.CFrame * CFrame.new(0, -490, 0)
         wait(0.7)
@@ -54,7 +68,3 @@ local function onAnimationPlayed(animTrack)
     end
 end
 game.Players.LocalPlayer.Character.Humanoid.AnimationPlayed:Connect(onAnimationPlayed)
-subtitle("1", "Instakill")
-subtitle("2", "Stun")
-subtitle("3", "Normal")
-subtitle("4", "Normal")
