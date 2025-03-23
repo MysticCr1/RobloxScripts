@@ -22,6 +22,7 @@ local m3 = baseButton.ToolName
 local baseButton = hotbarFrame:FindFirstChild("4").Base
 local m4 = baseButton.ToolName
 
+local isToggled = false
 local flip = false
 
 local posTable = {
@@ -52,29 +53,56 @@ task.spawn(function()
         if humanoid.Health == 0 then
             hasdied = true
         end
-        if m1.Text == "Crushing Pull" then
-            subtitle("1", "Instakill")
+        if not isToggled then
+            if m1.Text == "Crushing Pull" then
+                subtitle("1", "Instakill")
+            end
+            if m2.Text == "Windstorm Fury" then
+                subtitle("2", "Stun (Janky)")
+            end
+            if m3.Text == "Stone Coffin" then
+                subtitle("3", "Normal")
+            end
+            if m4.Text == "Expulsive Push" then
+                subtitle("4", "Normal")
+            end
         end
-        if m2.Text == "Windstorm Fury" then
-            subtitle("2", "Stun (Janky)")
-        end
-        if m3.Text == "Stone Coffin" then
-            subtitle("3", "Normal")
-        end
-        if m4.Text == "Expulsive Push" then
-            subtitle("4", "Normal")
+        if isToggled then
+            if m1.Text == "Crushing Pull" then
+                subtitle("1", "Jail")
+            end
+            if m2.Text == "Windstorm Fury" then
+                subtitle("2", "Stun (Janky)")
+            end
+            if m3.Text == "Stone Coffin" then
+                subtitle("3", "Normal")
+            end
+            if m4.Text == "Expulsive Push" then
+                subtitle("4", "Normal")
+            end
         end
     until hasdied
 end)
 local function onAnimationPlayed(animTrack)
     if animTrack.Animation.AnimationId == "rbxassetid://16139108718" then
-        posTable.originalPos = hrp.Position
-        Pausecamera()
-        wait(0.3)
-        hrp.CFrame = hrp.CFrame * CFrame.new(0, -490, 0)
-        wait(0.7)
-        UnPausecamera()
-        hrp.CFrame = CFrame.new(posTable.originalPos)
+        if not isToggled then
+            posTable.originalPos = hrp.Position
+            Pausecamera()
+            wait(0.3)
+            hrp.CFrame = hrp.CFrame * CFrame.new(0, -750, 0)
+            wait(0.7)
+            UnPausecamera()
+            hrp.CFrame = CFrame.new(posTable.originalPos)
+        end
+        if isToggled then
+            posTable.originalPos = hrp.Position
+            Pausecamera()
+            wait(0.3)
+            hrp.CFrame = CFrame.new(438.7888488769531, 439.51055908203125, -376.19354248046875)
+            wait(0.7)
+            UnPausecamera()
+            hrp.CFrame = CFrame.new(posTable.originalPos)
+        end
     end
 end
 game.Players.LocalPlayer.Character.Humanoid.AnimationPlayed:Connect(onAnimationPlayed)
@@ -104,3 +132,31 @@ local function onAnimationPlayed(animTrack)
     end
 end
 game.Players.LocalPlayer.Character.Humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+
+-- Toggles
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local textLabel = Instance.new("TextLabel")
+textLabel.Parent = screenGui
+textLabel.Size = UDim2.new(0, 50, 0, 50)
+textLabel.Position = UDim2.new(0, 10, 1, -10)
+textLabel.AnchorPoint = Vector2.new(0, 1)
+textLabel.BackgroundColor3 = Color3.new(0, 0, 0)
+textLabel.BackgroundTransparency = 1
+textLabel.TextColor3 = Color3.new(0,0,0)
+textLabel.Font = Enum.Font.SourceSansBold
+textLabel.TextSize = 36
+textLabel.Text = "1"
+
+local function toggleVariable(input)
+    if game:GetService("UserInputService"):GetFocusedTextBox() then
+        return
+    end
+
+    if input.KeyCode == Enum.KeyCode.T then
+        isToggled = not isToggled
+        textLabel.Text = isToggled and "2" or "1"
+    end
+end
+game:GetService("UserInputService").InputBegan:Connect(toggleVariable)
