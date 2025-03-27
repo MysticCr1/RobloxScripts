@@ -4,10 +4,9 @@ local awaitchange = false
 function STARTUP()
     local char = player.Character or player.CharacterAdded:Wait()
     local equippedcharacter = char:GetAttribute("Character")
-    if equippedcharacter == "Esper" and awaitchange and not Getgenv().Equippedomen then
+    if equippedcharacter == "Esper" and awaitchange then
         wait(1)
         awaitchange = false
-        Getgenv().Equippedomen = true
         local humanoid = char:WaitForChild("Humanoid")
         local hrp = char:WaitForChild("HumanoidRootPart")
         local playerGui = player.PlayerGui
@@ -238,7 +237,6 @@ function STARTUP()
     end
 end
 player.CharacterAdded:Connect(function(character)
-    Getgenv().Equippedomen = false
     STARTUP()
 end)
 STARTUP()
