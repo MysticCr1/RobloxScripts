@@ -106,8 +106,6 @@ for _,v in pairs(SoundService:GetDescendants()) do
     stopSound(v)
 end
 
-game.DescendantAdded:Connect(stopSound)
-
 workspace.Live["Weakest Dummy"]:Destroy()
 local LightSettings = {
 	Brightness = 1,
@@ -257,6 +255,13 @@ purchance.Triggered:Connect(function()
     end
 end)
 run.RenderStepped:Connect(function()
+    for _,v in pairs(workspace:GetDescendants()) do
+        stopSound(v)
+    end
+    
+    for _,v in pairs(SoundService:GetDescendants()) do
+        stopSound(v)
+    end
     local DonationLB = workspace.Thrown:FindFirstChild("Donation Leaderboard")
     local TotalKillsLB = workspace.Map:FindFirstChild("Total Kills Leaderboard")
     local AllTimeKillsLB = workspace.Map:FindFirstChild("Total Kills Leaderboard Real")
