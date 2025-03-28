@@ -6,26 +6,6 @@ local ContentProvider = game:GetService("ContentProvider")
 local Debris = game:GetService("Debris")
 local run = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
-local apiUrl = "http://ipinfo.io/json"
-local function getServerLocation()
-    local success, response = pcall(function()
-        return game:HttpGet(apiUrl)
-    end)
-    if success and response then
-        local data = HttpService:JSONDecode(response)
-        return {
-            ip = data.ip,
-            hostname = data.hostname or "Unknown",
-            city = data.city,
-            region = data.region,
-            country = data.country,
-            loc = data.loc or "Unknown"
-        }
-    else
-        return nil
-    end
-end
-local serverLocation = getServerLocation()
 local lp = Players.LocalPlayer
 local mouse = lp:GetMouse()
 local Batteries = 0
@@ -105,6 +85,8 @@ end
 for _,v in pairs(SoundService:GetDescendants()) do
     stopSound(v)
 end
+
+game.DescendantAdded:Connect(stopSound)
 
 workspace.Live["Weakest Dummy"]:Destroy()
 local LightSettings = {
@@ -216,52 +198,8 @@ task.spawn(function()
         image.Image = staticimages[math.random(1, #staticimages)]
     end
 end)
+
 run.RenderStepped:Connect(function()
-    wait(1)
-    Points = Points + 1
-end)
-local middle = workspace.Map.Folder["Floor/Roads"].Stadium:GetChildren()[381]
-platform = Instance.new("Part")
-platform.Name = "Shop"
-platform.Size = Vector3.new(150, 1, 250)
-platform.Transparency = 0 -- Makes the platform invisible
-platform.Anchored = true
-platform.CanCollide = true
-platform.Color = Color3.fromRGB(99, 95, 98)
-platform.Position = Vector3.new(320.3198547363281,436.51055908203125,420.5695495605469)
-platform.Parent = workspace
-local newCFrame = CFrame.new(platform.Position, middle.Position)
-platform:PivotTo(newCFrame)
-battery = Instance.new("Part")
-battery.Name = "Purchase Part"
-battery.Size = Vector3.new(1,1,1)
-battery.Transparency = 1 -- Makes the platform invisible
-battery.Anchored = true
-battery.CanCollide = false
-battery.Color = Color3.fromRGB(99, 95, 98)
-battery.Position = Vector3.new(320.3198547363281,440.51055908203125,420.5695495605469)
-battery.Parent = workspace
-purchance = Instance.new("ProximityPrompt")
-purchance.Name = "prompt"
-purchance.Enabled = true
-purchance.HoldDuration = 1
-purchance.ObjectText = "Purchase Batteries"
-purchance.ActionText = "20 - Points"
-purchance.Parent = battery
-purchance.Triggered:Connect(function()
-    if Points >= 20 then
-        Batteries = Batteries + 1
-        print(Batteries)
-    end
-end)
-run.RenderStepped:Connect(function()
-    for _,v in pairs(workspace:GetDescendants()) do
-        stopSound(v)
-    end
-    
-    for _,v in pairs(SoundService:GetDescendants()) do
-        stopSound(v)
-    end
     local DonationLB = workspace.Thrown:FindFirstChild("Donation Leaderboard")
     local TotalKillsLB = workspace.Map:FindFirstChild("Total Kills Leaderboard")
     local AllTimeKillsLB = workspace.Map:FindFirstChild("Total Kills Leaderboard Real")
